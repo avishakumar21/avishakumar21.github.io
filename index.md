@@ -1,5 +1,6 @@
 ---
 title: ""
+image: /assets/LeekColor.png
 ---
 
 # We are LEAK Leeks!
