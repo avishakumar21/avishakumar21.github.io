@@ -43,7 +43,40 @@
   <div class="post-content">
     <h1 id="lab-1">Lab 1</h1>
 
-<p>Test</p>
+<p><strong>Goal:</strong>
+The goal of this lab was to understand how to program an Arduino to do different tasks so that eventually we would be able to program it to make the robot do an autonomous task.</p>
+
+<p><strong>Materials:</strong>
+The main portion of this lab required the following materials for each subteam:</p>
+<ul>
+  <li>Arduino Uno</li>
+  <li>USB A/B Cable</li>
+  <li>Continuous Rotation Servo</li>
+  <li>LED</li>
+  <li>Potentiometer</li>
+  <li>Resistors</li>
+  <li>1 Solderless Breadboard
+The preliminary construction of our robot required:</li>
+  <li>Chassis</li>
+  <li>Screws</li>
+  <li>9V Battery with Clip</li>
+  <li>Ball Bearings</li>
+</ul>
+
+<p><strong>Procedure:</strong></p>
+
+<p><em>Part 1: Blinking LED</em>
+We first got the LED on the board to blink, then hooked up an external LED to the board as shown below. It is important to note that a series resistor of at least 300 ohm was added to this setup. Throughout this lab, series resistors were added to all components connected to pins to mediate the risk of burning out any of the components or pins.
+<img src="/externalblink.png" alt="alt text" /></p>
+
+<p><em>Part 2: Exploring Analog Output</em>
+We then connected a potentiometer to the circuit again adding a series resistor. We first read the values from the potentiometer through an analog input pin, and then modified our code to output that value to the LED to control its brightness.</p>
+
+<p><em>Part 3: Learning to Use Servos</em>
+We then hooked up a PWM signal to control a servo motor. The value read from the potentiometer is written to the servo in order to control the movement of the servo. We used the Arduino Servo library to power the servo and experiment with its speed and rotational direction. We figured out that writing a 0 would give a full speed rotation clockwise, 90 would stop the motor, and writing 180 would give a full speed rotation counter-clockwise. One important note about this part of the lab was that we had to adjust the motor so that at 90 the motor would stop. This was done by using a screw to adjust the motor.</p>
+
+<p><strong>PWM Code</strong>
+<img src="/pwmcode.png" alt="alt text" /></p>
 
   </div>
 
@@ -63,7 +96,7 @@
           <li class="p-name">LEAK Leeks</li></ul>
       </div>
 
-      <div class="footer-col footer-col-2"><ul class="social-media-list"><li><a href="https://github.com/liampatterson%2FFA18-ECE3400"><svg class="svg-icon"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg> <span class="username">liampatterson/FA18-ECE3400</span></a></li></ul>
+      <div class="footer-col footer-col-2"><ul class="social-media-list"></ul>
 </div>
 
       <div class="footer-col footer-col-3">

@@ -20,3 +20,6 @@ LEAK is the brainchild of four vibrant junior ECE students.
 - Avisha Kumar
 - Katarina Martucci
 - Liam Patterson
+
+## Resources
+- [ Github Repo ](https://github.com/liampatterson/FA18-ECE3400)
