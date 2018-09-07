@@ -28,6 +28,8 @@ The preliminary construction of our robot required:
 
 *Part 1: Blinking LED*  
 We first got the LED on the board to blink, then hooked up an external LED to the board as shown below. It is important to note that a series resistor of at least 300 ohm was added to this setup. Throughout this lab, series resistors were added to all components connected to pins to mediate the risk of burning out any of the components or pins.
+
+**External Blink Code**
 ![alt text](/externalblink.png)
 
 
