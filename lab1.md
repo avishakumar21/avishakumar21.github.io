@@ -16,7 +16,7 @@ The main portion of this lab required the following materials for each subteam:
 * LED
 * Potentiometer
 * Resistors
-* 1 Solderless Breadboard
+* 1 Solderless Breadboard  
 The preliminary construction of our robot required:
 * Chassis
 * Screws
@@ -39,7 +39,7 @@ We then hooked up a PWM signal to control a servo motor. The value read from the
 **PWM Code**
 ![alt text](/pwmcode.png)
 
-**Video**
+**Video**  
 <a href="https://www.youtube.com/watch?v=bswbdqM8vKw&feature=youtu.be
-" target="_blank"><img src="http://img.youtube.com/vi/bswbdqM8vKw&feature/0.jpg" 
+" target="_blank"><img src="http://img.youtube.com/vi/bswbdqM8vKw/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
