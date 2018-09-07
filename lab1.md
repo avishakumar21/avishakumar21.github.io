@@ -17,6 +17,7 @@ The main portion of this lab required the following materials for each subteam:
 * Potentiometer
 * Resistors
 * 1 Solderless Breadboard  
+
 The preliminary construction of our robot required:
 * Chassis
 * Screws
@@ -38,6 +39,14 @@ We then hooked up a PWM signal to control a servo motor. The value read from the
 
 **PWM Code**
 ![alt text](/pwmcode.png)
+
+*Part 4: Robot Assembly*  
+We then assembled our robot by hooking up 2 motors to the Arduino. We played around a lot with the timing and speed needed for each motor so that they could act together to perform a task. At first we got the robot to just turn right, and then played around with getting it to go in a square. One of our motors kept getting stuck in the turn, so we will have to adjust this. Getting the robot to do more complicated patterns will be easier when the movement is based on a sensor and not based on timing.
+
+
+**Outcome:**  
+By the end of this lab, we had a robot that could generally move in a square shape. We also had a better understanding of both the Arduino IDE and how to connect and control various components with our Arduino Uno.
+
 
 **Video**  
 <a href="https://www.youtube.com/watch?v=bswbdqM8vKw&feature=youtu.be
