@@ -8,7 +8,7 @@ image: /assets/LeekColor.png
 LEAK is the brainchild of four vibrant junior ECE students.
 - Emma Kaufman
 - Avisha Kumar
-![](/assets/aboutus/Avisha.jpg)
+![](/assets/aboutus/Avisha.jpg = 100x 100)
 Avisha has a puppy named Joy. When she's not engineering, she likes to hike and swim. 
 - Katarina Martucci
 	Katarina is a junior ECE
