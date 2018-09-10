@@ -10,5 +10,5 @@ LEAK is the brainchild of four vibrant junior ECE students.
 - Avisha Kumar
 - Katarina Martucci
 	Katarina is a junior ECE
-	![](/assets/aboutus/katarina.png =250x250)
+	![](/assets/aboutus/katarina.png =100x100)
 - Liam Patterson
