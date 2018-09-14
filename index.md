@@ -6,7 +6,7 @@ image: /assets/LeekColor.png
 # We are LEAK Leeks!
 -----
 This website is a work in progress but will be updated throughout the semester. Stay tuned to see what leaks!
-
+![it's a leek](/assets/LeekColor.png)
 
 ## Labs
 - [ Lab 1 ](/labs/lab1)
