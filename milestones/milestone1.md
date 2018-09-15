@@ -17,7 +17,7 @@ The materials used for this milestone are as follows:
 
 **Procedure:**
 
-*Part 1: Following A Line*
+*Part 1: Following A Line*  
 We began by taping two line sensors to the front of our robot, as close to the ground as possible. We measured the difference between the white and black surfaces using these sensors, and programmed our robot to follow the white line. Our preliminary implementation allowed the robot to generally follow a line, but it easily strayed off course and sometimes missed turns.
 
 To try to solve this issue, we first added a third sensor, so that the middle sensor would continuously sit on the line, one sensor would sit to the left of the line, and the last sensor would sit to the right of the line. We then removed the tape securing the sensors and mounted the sensors to the front of the robot, still as close to the ground as possible, to ensure consistent readings. We hoped these two modifications would help the robot both stay on the line and consistently turn. This still gave us issues, because it was hard to keep the robot completely straight, and there was not much leniency with the outside sensors staying off of the line.
@@ -31,7 +31,7 @@ We used the following code to implement the above state machine:
 
 ![alt text](/assets/milestone1/statemachinecode.png)
 
-*Part 2: Figure Eight*  
+*Part 2: Figure Eight*   
 To implement the figure eight, we first had to make our robot turn when all three sensors detected white. The turning function first caused the robot to turn some small amount so that its middle sensor was no longer aligned with the line. It then continued to turn until the middle sensor again sensed that it was above the white line.
 This is our code for a right and left turn:  
 ![alt text](/assets/milestone1/turns.png)
