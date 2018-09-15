@@ -36,13 +36,16 @@ To implement the figure eight, we first had to make our robot turn when all thre
 
 ![alt text](/assets/milestone1/whitelinecode.png)
 
-Once our robot could turn, we hard-coded it perform four right turns, followed by four left turns in a row to implement the figure eight.
+Once our robot could turn, we coded a loop for it to perform four right turns, followed by four left turns in a row to implement the figure eight.
 
 ![alt text](/assets/milestone1/figureeightcode.jpg)
 
 Below is a video of our robot completing a figure eight:
 
 **Video of Figure Eight**  
+<a href="https://www.youtube.com/watch?v=l3SK6mzpvlA
+" target="_blank"><img src="http://img.youtube.com/vi/l3SK6mzpvlA/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 **Outcome:**
 We completed this milestone by adding line following and turning functionality to our robot and programming it to follow a figure eight. This milestone helped us to practice using sensors and and introduced us to the use of state machines to model our robot’s behavior.
