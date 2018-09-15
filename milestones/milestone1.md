@@ -17,11 +17,6 @@ The materials used for this milestone are as follows:
 
 **Procedure:**
 
-
-<<<<<<< HEAD
-*Part 1: Following A Line*  
-We began by taping two line sensors to the front of our robot, as close to the ground as possible. We measured the difference between the white and black surfaces using these sensors, and programmed our robot to follow the white line. Our preliminary implementation allowed the robot to generally follow a line, but it easily strayed off course and sometimes missed turns. 
-
 *Part 1: Following A Line*
 We began by taping two line sensors to the front of our robot, as close to the ground as possible. We measured the difference between the white and black surfaces using these sensors, and programmed our robot to follow the white line. Our preliminary implementation allowed the robot to generally follow a line, but it easily strayed off course and sometimes missed turns.
 
