@@ -38,7 +38,7 @@ To implement the figure eight, we first had to make our robot turn when all thre
 
 Once our robot could turn, we coded a loop for it to perform four right turns, followed by four left turns in a row to implement the figure eight.
 
-![alt text](/assets/milestone1/figureeightcode.jpg)
+![alt text](/assets/milestone1/figureeightcode.JPG)
 
 Below is a video of our robot completing a figure eight:
 
