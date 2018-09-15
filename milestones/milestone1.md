@@ -38,8 +38,8 @@ We used the following code to implement the above state machine:
 
 *Part 2: Figure Eight*  
 To implement the figure eight, we first had to make our robot turn when all three sensors detected white. The turning function first caused the robot to turn some small amount so that its middle sensor was no longer aligned with the line. It then continued to turn until the middle sensor again sensed that it was above the white line.
-
-![alt text](/assets/milestone1/whitelinecode.png)
+This is our code for a right and left turn:  
+![alt text](/assets/milestone1/turns.png)
 
 Once our robot could turn, we coded a loop for it to perform four right turns, followed by four left turns in a row to implement the figure eight.
 
