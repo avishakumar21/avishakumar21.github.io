@@ -10,6 +10,7 @@ This website is a work in progress but will be updated throughout the semester. 
 
 ## Labs
 - [ Lab 1 ](/labs/lab1)
+- [ Lab 2 ](/labs/lab2)
 
 ## Milestones
 - [ Milestone 1 ](/milestones/milestone1)
