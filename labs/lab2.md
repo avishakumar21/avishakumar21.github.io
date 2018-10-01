@@ -24,7 +24,7 @@ Once we got a correct output, we took data from multiple readings and put them i
 ![alt text](/assets/lab2/mult_cycle_readings.png)
 We can observe the different peaks for each cycle, noticing that the peaks tend to stay toward the beginning of each cycle. We determined that the first two bins always had the highest numbers, and can discard this data as noise. Beyond this, for 660 Hz we found that the fifth bin always held the highest number. This can be more easily observed in a graph of one cycle:
 ![alt text](/assets/lab2/one_cycle_reading.png)
-[alt text](/assets/lab2/excel_bins.png)
+![alt text](/assets/lab2/excel_bins.png)
 As we can see above, the fifth bin holds the highest value, and this pattern continued over multiple cycles. 
 Looking at team Alpha’s calculation, we can determine how many frequencies are represented by one bin:
 ADC sampling frequency = 38kHz = 16MHz/ 32 prescalar / 13 clock cycles
