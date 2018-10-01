@@ -6,48 +6,29 @@ image: /assets/LeekColor.png
 # Lab 2
 
 **Goal:**
-The goal of this lab was to understand how to program an Arduino to do different tasks so that eventually we would be able to program it to make the robot do an autonomous task.
+
+
 
 **Materials:**
 The main portion of this lab required the following materials for each subteam:
-* Arduino Uno
-* USB A/B Cable
-* Continuous Rotation Servo
-* LED
-* Potentiometer
-* Resistors
-* 1 Solderless Breadboard  
+* 
+*
 
-The preliminary construction of our robot required:
-* Chassis
-* Screws
-* 9V Battery with Clip
-* Ball Bearings
+**Acoustic Team:**  
+Liam & Katarina
 
-**Procedure:**
+*Unit Testing:*  
+Our first task was to test the arduino to make sure that the serial monitor’s output matches the frequency output from the signal generator. We took the sample code from the FFT library for the serial_adc and ran it with the signal generator outputting 660 Hz. At first, we were having a lot of issues because we could not see anything on the serial output. After a lot of issues with configuration and trying to change the sample code to use the analogread function instead, we discovered with the help of a TA that our version of the Arduino IDE was too new for the FFT library. We had to use an IDE version 1.8.5 or lower in order to run the code. Once we did this, we were able to correctly view the serial output.
 
-*Part 1: Blinking LED*  
-We first got the LED on the board to blink, then hooked up an external LED to the board as shown below. It is important to note that a series resistor of at least 300 ohm was added to this setup. Throughout this lab, series resistors were added to all components connected to pins to mediate the risk of burning out any of the components or pins.
+*Finding Bins::*  
+Once we got a correct output, we took data from multiple readings and put them into an Excel sheet then plotted the data in order to determine the different frequency bins. Because our signal generator produced a 660 Hz signal, we knew that the highest number in one cycle of our data would represent the bin that holds the frequency range that 660 Hz falls into. This is the first graph we got, when we read multiple cycles:
+![alt text](/assets/lab2/mult_cycle_readings.png)
 
-**External Blink Code**
-![alt text](/assets/lab1/externalblink.png)
+ 
 
 
-*Part 2: Exploring Analog Output*  
-We then connected a potentiometer to the circuit again adding a series resistor. We first read the values from the potentiometer through an analog input pin, and then modified our code to output that value to the LED to control its brightness. 
-
-*Part 3: Learning to Use Servos*  
-We then hooked up a PWM signal to control a servo motor. The value read from the potentiometer is written to the servo in order to control the movement of the servo. We used the Arduino Servo library to power the servo and experiment with its speed and rotational direction. We figured out that writing a 0 would give a full speed rotation clockwise, 90 would stop the motor, and writing 180 would give a full speed rotation counter-clockwise. One important note about this part of the lab was that we had to adjust the motor so that at 90 the motor would stop. This was done by using a screw to adjust the motor.
-
-**PWM Code**
-![alt text](/assets/lab1/pwmcode.png)
-
-*Part 4: Robot Assembly*  
-We then assembled our robot by hooking up 2 motors to the Arduino. We played around a lot with the timing and speed needed for each motor so that they could act together to perform a task. At first we got the robot to just turn right, and then played around with getting it to go in a square. One of our motors kept getting stuck in the turn, so we will have to adjust this. Getting the robot to do more complicated patterns will be easier when the movement is based on a sensor and not based on timing.
 
 
-**Outcome:**  
-By the end of this lab, we had a robot that could generally move in a square shape. We also had a better understanding of both the Arduino IDE and how to connect and control various components with our Arduino Uno.
 
 
 **Video**  
