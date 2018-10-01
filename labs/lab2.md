@@ -26,10 +26,10 @@ We can observe the different peaks for each cycle, noticing that the peaks tend 
 ![alt text](/assets/lab2/one_cycle_reading.png)
 ![alt text](/assets/lab2/excel_bins.png)
 As we can see above, the fifth bin holds the highest value, and this pattern continued over multiple cycles. 
-Looking at team Alpha’s calculation, we can determine how many frequencies are represented by one bin:
-ADC sampling frequency = 38kHz = 16MHz/ 32 prescalar / 13 clock cycles
-We know one cycle takes 256 samples, so by taking this sampling frequency divided by the number of samples, we can get the number of frequencies per bin:
-38kHz / 256 =148.4 Hz pr bin.
+Looking at team Alpha’s calculation, we can determine how many frequencies are represented by one bin:  
+ADC sampling frequency = 38kHz = 16MHz/ 32 prescalar / 13 clock cycles  
+We know one cycle takes 256 samples, so by taking this sampling frequency divided by the number of samples, we can get the number of frequencies per bin:  
+38kHz / 256 =148.4 Hz per bin  
 Now we can add the bin values to the excel sheet to determine the range of the fifth bin:
 
 
