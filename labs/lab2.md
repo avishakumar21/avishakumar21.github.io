@@ -81,30 +81,6 @@ The figure below  illustrates our completed circuit. We have a DC blocking compo
 **Optical Team**
 Avisha & Emma
 
-We began testing the serial monitor output using the FFT library. We followed the same procedure as outlined by the acoustic group, changing the baud rate to obtain numbers for our output. We then set up the following simple circuit with our phototransistor. A phototransistor allows more current to pass as it receives more light. 
-
-By directly hooking up an oscilloscope, we observed that, when held up to our IR hat, our circuit could detect a frequency of 6kHz. We removed the oscilloscope probe and attached the output of our circuit to the Arduino through pin A0. When we ran the serial_adc script and output the data to Excel to be graphed, we could not see any peaks in the frequency data. Because our bins were large enough to capture 6kHz, we concluded that we needed an amplifier to increase the strength of our signal. We constructed the same circuit used by the acoustic team above, replacing the 390kΩ resistor with a 39MΩ resistor to create a gain of 10,000. Since the circuit has such high gain, we are able to effectively capture the IR hat frequency of 6kHz even at a range of ~1ft. However, through empirical testing, we found that the IR hat has a limited field of view in terms of emitting IR light. For this reason, we found that our IR detection is most accurate and receives the largest signal when directly head on with an IR LED. We anticipate using some sort of detection filter and/or adding a second IR receiver to enable high accuracy even when not seen head on, as the competition environment would necessitate this. 
-The modified IR amplifier is shown below. 
-
-A plot of a 6kHz signal in the frequency domain as output from our circuit is shown below:
-
-The 6kHz signal produces a spike in bin 42, as calculated using the values determined by the acoustic group. We could also detect the 18kHz decoy signal, which produces a spike in bin 120, as shown in the oscilloscope reading and the plot below.
-
- We decided to demonstrate that our robot could recognize a 6kHz signal and ignore the 18kHz decoy signal by lighting up LEDs for each case. To accomplish this, we implemented the following code ran after our baseline FFT code:
-
-Attached is a video of our robot detecting the 6kHz and 18kHz frequencies.
-
-**Video**  
-<<<<<<< HEAD
-<a href="https://www.youtube.com/watch?v=tcCEQtSohfE&feature=youtu.be
-" target="_blank"><img src="http://img.youtube.com/vi/tcCEQtSohfE/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
-=======
-
-
-**Optical Team**
-Avisha & Emma
-
 *Procedure:*
 We began testing the serial monitor output using the FFT library. We followed the same procedure as outlined by the acoustic group, changing the baud rate to obtain numbers for our output. We then set up the following simple circuit with our phototransistor. A phototransistor allows more current to pass as it receives more light. Below is an image of a circuit using a phototransistor, which we implemented: 
 
@@ -131,13 +107,16 @@ The 6kHz signal produces a spike in bin 42, as calculated using the values deter
  ![alt text](/assets/lab2/3400Lab2DecoyGraph.png)
 
 
- Below is a video of our robot detecting the 6kHz and 18kHz frequencies:
+ Below is a video of our robot detecting the 6kHz and 18kHz frequencies.
 
-**video**
 
 *Explanation of FFT:* 
 A Fast Fourier Transform converts a time domain signal into a frequency domain signal. Every signal in the time domain can be constructed from sine and cosine waves at different frequencies with different amplitudes and phases. Plotting a Fourier Transform in the frequency domain produces a graphs with peaks at the signal’s component frequencies. This is useful in that frequency domain graphs allow us to pinpoint signals from specific sources (i.e. an IR hat at 6kHz).
 
 
+**Video** 
+This is a video that demonstrates the use of the microphone and the IR transistor.
+<a href="https://www.youtube.com/watch?v=tcCEQtSohfE&feature=youtu.be
+" target="_blank"><img src="http://img.youtube.com/vi/tcCEQtSohfE/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
->>>>>>> cb14da6471c7014e03f374a8630fe28f3b3de15d
