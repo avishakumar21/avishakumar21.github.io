@@ -40,13 +40,21 @@ This is what the FFT looks like for noise, for comparison:
 The image below shows the code used to demonstrate that our robot could detect the audio signal and respond by lighting up an LED. A video of this response is shown in the video found at the bottom of this page.
 ![alt text](/assets/lab2/mic_code.png)
 
+*Circuit:* 
+
+ ![alt text](/assets/lab2/signal_gen_mic.png)
+ The oscilloscope view above depicts our function generator outputting a 660 Hz signal (CH2) and our amplifier amplifying the signal input (CH1). In this case the amplifier was simply hooked up to the function generator and not to the microphone. This allowed us to troubleshoot and proof each stage of the circuit independently. It also proved that our amplifier has a gain of 10, which we later modified to ~100 after signal testing with the microphone. 
 
 
- 
+![alt text](/assets/lab2/actual_mic_gain.png)
+This figure depicts the entirety of the complete circuit. The microphone input (CH2) is hearing a tone generated at 660Hz. It then passes through a DC filter, and finally through an amplifier to generate the resulting signal (CH1). 
 
 
+![alt text](/assets/lab2/mic_osc_fft.png)
+Above is an oscilloscope capture for 660 Hz.
 
-
+![alt text](/assets/lab2/noise_osc_fft.png)
+Above is an oscilloscope capture for noise.
 
 
 **Video**  
