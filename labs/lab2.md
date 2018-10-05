@@ -24,7 +24,7 @@ IR Team:
 * OP598 IR transistor (Phototransistor) 
 * 1 IR hat 
 * 1 IR decoy
-* LM385 Op Amp
+* LF353 Op Amp
 
 Both Teams used the following equipment:
 * Oscilloscope
