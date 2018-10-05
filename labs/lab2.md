@@ -69,6 +69,8 @@ The image below shows the code used to demonstrate that our robot could detect t
 
 
 ![alt text](/assets/lab2/actual_mic_gain.png)  
+ <img src = "assets/lab2/actual_mic_gain.png" width="350" height="350">
+
 This figure depicts the entirety of the complete circuit. The microphone input (CH2) is hearing a tone generated at 660Hz. It then passes through a DC filter, and finally through an amplifier to generate the resulting signal (CH1). 
 
 
