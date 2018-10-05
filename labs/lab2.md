@@ -37,7 +37,7 @@ Now we know that when we hook up our circuit, we can look at the fifth bin and s
 This is what the FFT looks like for noise, for comparison:
 ![alt text](/assets/lab2/noise_fft.png)
 
-The image below shows the code used to demonstrate that our robot could detect the audio signal and respond by lighting up an LED. A video of this response is shown in the video found at the bottom of this page.
+The image below shows the code used to demonstrate that our robot could detect the audio signal and respond by lighting up an LED. A video of this response is shown in the video found at the bottom of this page.  
 ![alt text](/assets/lab2/mic_code.png)
 
 *Circuit:* 
@@ -55,6 +55,9 @@ Above is an oscilloscope capture for 660 Hz.
 
 ![alt text](/assets/lab2/noise_osc_fft.png)
 Above is an oscilloscope capture for noise.
+
+The figure below  illustrates our completed circuit. We have a DC blocking component between the microphone and the amplifier, and then a final resistor to Vout as its connected directly to an Arduino pin. The theoretical gain is 390k/3.3k which is approximately 118. This circuit was modified slightly from Team Alpha’s FA17 circuit.
+![alt text](/assets/lab2/mic_circuit_diagram.png)
 
 
 **Video**  
