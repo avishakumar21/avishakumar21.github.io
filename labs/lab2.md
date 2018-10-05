@@ -31,7 +31,7 @@ ADC sampling frequency = 38kHz = 16MHz/ 32 prescalar / 13 clock cycles
 We know one cycle takes 256 samples, so by taking this sampling frequency divided by the number of samples, we can get the number of frequencies per bin:  
 38kHz / 256 =148.4 Hz per bin  
 Now we can add the bin values to the excel sheet to determine the range of the fifth bin:
-![alt text](/assets/lab2/close_up.png)
+![alt text](/assets/lab2/close_up.png)  
 Now we know that when we hook up our circuit, we can look at the fifth bin and see if it is above a certain threshold (i.e. is the maximum over the samples) to determine if we are indeed hearing a 660 Hz start sound.
 
 This is what the FFT looks like for noise, for comparison:
