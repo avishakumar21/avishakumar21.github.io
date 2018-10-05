@@ -44,6 +44,7 @@ Once we got a correct output, we took data from multiple readings and put them i
 
 We determined that the first two bins always had the highest numbers, and can discard this data as noise. Beyond this, for 660 Hz we found that the fifth bin always held the highest number. This can be more easily observed in a graph of one cycle:
 ![alt text](/assets/lab2/660Hz_reading.png)
+<img src = "assets/lab2/660Hz_reading.png" width="150" height="150">
 ![alt text](/assets/lab2/excel_bins.png)
 As we can see above, the fifth bin holds the highest value, and this pattern continued over multiple cycles. 
 Looking at team Alpha’s calculation, we can determine how many frequencies are represented by one bin:  
