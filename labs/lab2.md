@@ -66,18 +66,18 @@ The image below shows the code used to demonstrate that our robot could detect t
  The oscilloscope view above depicts our function generator outputting a 660 Hz signal (CH2) and our amplifier amplifying the signal input (CH1). In this case the amplifier was simply hooked up to the function generator and not to the microphone. This allowed us to troubleshoot and proof each stage of the circuit independently. It also proved that our amplifier has a gain of 10, which we later modified to ~100 after signal testing with the microphone. 
 
 
-![alt text](/assets/lab2/actual_mic_gain.png)
+![alt text](/assets/lab2/actual_mic_gain.png)  
 This figure depicts the entirety of the complete circuit. The microphone input (CH2) is hearing a tone generated at 660Hz. It then passes through a DC filter, and finally through an amplifier to generate the resulting signal (CH1). 
 
 
-![alt text](/assets/lab2/mic_osc_fft.png)
+![alt text](/assets/lab2/mic_osc_fft.png)  
 Above is an oscilloscope capture for 660 Hz.
 
-![alt text](/assets/lab2/noise_osc_fft.png)
+![alt text](/assets/lab2/noise_osc_fft.png)  
 Above is an oscilloscope capture for noise.
 
 The figure below  illustrates our completed circuit. We have a DC blocking component between the microphone and the amplifier, and then a final resistor to Vout as its connected directly to an Arduino pin. The theoretical gain is 390k/3.3k which is approximately 118. This circuit was modified slightly from Team Alpha’s FA17 circuit.
-![alt text](/assets/lab2/mic_circuit_diagram.png)
+![alt text](/assets/lab2/mic_circuit_diagram.png)  
 
 **Optical Team**  
 Avisha & Emma
@@ -96,6 +96,11 @@ The 6kHz signal produces a spike in bin 42, as calculated using the values deter
 Attached is a video of our robot detecting the 6kHz and 18kHz frequencies.
 
 **Video**  
+<<<<<<< HEAD
+<a href="https://www.youtube.com/watch?v=tcCEQtSohfE&feature=youtu.be
+" target="_blank"><img src="http://img.youtube.com/vi/tcCEQtSohfE/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+=======
 
 
 **Optical Team**
@@ -136,3 +141,4 @@ A Fast Fourier Transform converts a time domain signal into a frequency domain s
 
 
 
+>>>>>>> cb14da6471c7014e03f374a8630fe28f3b3de15d
