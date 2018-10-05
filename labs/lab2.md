@@ -50,7 +50,7 @@ ADC sampling frequency = 38kHz = 16MHz/ 32 prescalar / 13 clock cycles
 We know one cycle takes 256 samples, so by taking this sampling frequency divided by the number of samples, we can get the number of frequencies per bin:  
 38kHz / 256 =148.4 Hz per bin  
 Now we can add the bin values to the excel sheet to determine the range of the fifth bin:
-![alt text](/assets/lab2/close_up.png)
+![alt text](/assets/lab2/close_up.png)  
 Now we know that when we hook up our circuit, we can look at the fifth bin and see if it is above a certain threshold (i.e. is the maximum over the samples) to determine if we are indeed hearing a 660 Hz start sound.
 
 This is what the FFT looks like for noise, for comparison:
@@ -78,6 +78,21 @@ Above is an oscilloscope capture for noise.
 The figure below  illustrates our completed circuit. We have a DC blocking component between the microphone and the amplifier, and then a final resistor to Vout as its connected directly to an Arduino pin. The theoretical gain is 390k/3.3k which is approximately 118. This circuit was modified slightly from Team Alpha’s FA17 circuit.
 ![alt text](/assets/lab2/mic_circuit_diagram.png)
 
+**Optical Team**
+Avisha & Emma
+
+We began testing the serial monitor output using the FFT library. We followed the same procedure as outlined by the acoustic group, changing the baud rate to obtain numbers for our output. We then set up the following simple circuit with our phototransistor. A phototransistor allows more current to pass as it receives more light. 
+
+By directly hooking up an oscilloscope, we observed that, when held up to our IR hat, our circuit could detect a frequency of 6kHz. We removed the oscilloscope probe and attached the output of our circuit to the Arduino through pin A0. When we ran the serial_adc script and output the data to Excel to be graphed, we could not see any peaks in the frequency data. Because our bins were large enough to capture 6kHz, we concluded that we needed an amplifier to increase the strength of our signal. We constructed the same circuit used by the acoustic team above, replacing the 390kΩ resistor with a 39MΩ resistor to create a gain of 10,000. Since the circuit has such high gain, we are able to effectively capture the IR hat frequency of 6kHz even at a range of ~1ft. However, through empirical testing, we found that the IR hat has a limited field of view in terms of emitting IR light. For this reason, we found that our IR detection is most accurate and receives the largest signal when directly head on with an IR LED. We anticipate using some sort of detection filter and/or adding a second IR receiver to enable high accuracy even when not seen head on, as the competition environment would necessitate this. 
+The modified IR amplifier is shown below. 
+
+A plot of a 6kHz signal in the frequency domain as output from our circuit is shown below:
+
+The 6kHz signal produces a spike in bin 42, as calculated using the values determined by the acoustic group. We could also detect the 18kHz decoy signal, which produces a spike in bin 120, as shown in the oscilloscope reading and the plot below.
+
+ We decided to demonstrate that our robot could recognize a 6kHz signal and ignore the 18kHz decoy signal by lighting up LEDs for each case. To accomplish this, we implemented the following code ran after our baseline FFT code:
+
+Attached is a video of our robot detecting the 6kHz and 18kHz frequencies.
 
 **Video**  
 
@@ -88,31 +103,27 @@ Avisha & Emma
 *Procedure:*
 We began testing the serial monitor output using the FFT library. We followed the same procedure as outlined by the acoustic group, changing the baud rate to obtain numbers for our output. We then set up the following simple circuit with our phototransistor. A phototransistor allows more current to pass as it receives more light. Below is an image of a circuit using a phototransistor, which we implemented: 
 
-**INSERT IMAGE**
-![alt text](/assets/lab2/.png)
+![alt text](/assets/lab2/phototransistor.png)
 
 
 By directly hooking up an oscilloscope, we observed that, when held up to our IR hat, our circuit could detect a frequency of 6kHz. We removed the oscilloscope probe and attached the output of our circuit to the Arduino through pin A0. When we ran the serial_adc script and output the data to Excel to be graphed, we could not see any peaks in the frequency data. Because our bins were large enough to capture 6kHz, we concluded that we needed an amplifier to increase the strength of our signal. We constructed the same circuit used by the acoustic team above, replacing the 390kΩ resistor with a 39MΩ resistor to create a gain of 10,000. Since the circuit has such high gain, we are able to effectively capture the IR hat frequency of 6kHz even at a range of ~1ft. However, through empirical testing, we found that the IR hat has a limited field of view in terms of emitting IR light. For this reason, we found that our IR detection is most accurate and receives the largest signal when directly head on with an IR LED. We anticipate using some sort of detection filter and/or adding a second IR receiver to enable high accuracy even when not seen head on, as the competition environment would necessitate this.
 
 The modified IR amplifier is shown below:
 
-**INSERT IMAGE** 
-![alt text](/assets/lab2/.png)
+![alt text](/assets/lab2/ir_circuit_diagram.png)
 
 A plot of a 6kHz signal in the frequency domain as output from our circuit is shown below:
-**INSERT IMAGE** 
-![alt text](/assets/lab2/.png)
+
+![alt text](/assets/lab2/3400Lab2IRGraph.png)
 
 
 The 6kHz signal produces a spike in bin 42, as calculated using the values determined by the acoustic group. We could also detect the 18kHz decoy signal, which produces a spike in bin 120, as shown in the oscilloscope reading and the plot below.
 
-**INSERT IMAGE** 
-![alt text](/assets/lab2/.png)
+![alt text](/assets/lab2/Screen Shot 2018-10-05 at 11.30.27 AM.png)
 	
  We decided to demonstrate that our robot could recognize a 6kHz signal and ignore the 18kHz decoy signal by lighting up LEDs for each case. To accomplish this, we implemented the following code ran after our baseline FFT code:
 
- **INSERT IMAGE**
- ![alt text](/assets/lab2/.png)
+ ![alt text](/assets/lab2/3400Lab2DecoyGraph.png)
 
 
  Below is a video of our robot detecting the 6kHz and 18kHz frequencies:
