@@ -11,6 +11,7 @@ image: /assets/LeekColor.png
 
 **Materials:**
 The main portion of this lab required the following materials for each subteam:
+
 Acoustic Team:
 * Arduino Uno
 * Electret microphone
@@ -78,7 +79,7 @@ Above is an oscilloscope capture for noise.
 The figure below  illustrates our completed circuit. We have a DC blocking component between the microphone and the amplifier, and then a final resistor to Vout as its connected directly to an Arduino pin. The theoretical gain is 390k/3.3k which is approximately 118. This circuit was modified slightly from Team Alpha’s FA17 circuit.
 ![alt text](/assets/lab2/mic_circuit_diagram.png)  
 
-**Optical Team**
+**Optical Team**  
 Avisha & Emma
 
 *Procedure:*
