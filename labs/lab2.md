@@ -11,6 +11,7 @@ image: /assets/LeekColor.png
 
 **Materials:**
 The main portion of this lab required the following materials for each subteam:
+
 Acoustic Team:
 * Arduino Uno
 * Electret microphone
@@ -78,7 +79,7 @@ Above is an oscilloscope capture for noise.
 The figure below  illustrates our completed circuit. We have a DC blocking component between the microphone and the amplifier, and then a final resistor to Vout as its connected directly to an Arduino pin. The theoretical gain is 390k/3.3k which is approximately 118. This circuit was modified slightly from Team Alpha’s FA17 circuit.
 ![alt text](/assets/lab2/mic_circuit_diagram.png)
 
-**Optical Team**
+**Optical Team**  
 Avisha & Emma
 
 We began testing the serial monitor output using the FFT library. We followed the same procedure as outlined by the acoustic group, changing the baud rate to obtain numbers for our output. We then set up the following simple circuit with our phototransistor. A phototransistor allows more current to pass as it receives more light. 
