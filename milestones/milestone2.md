@@ -39,8 +39,8 @@ In our loop function, we have the robot go straight and then call the detectIR()
 ![alt text](/assets/milestone2/IR_loop_code.png)
 
 Below is the code for the detectIR() function, and the explanation of the code will follow.
-![alt text](/assets/milestone2/Idetect_IR_part1.png)
-![alt text](/assets/milestone2/Idetect_IR_part2.png)
+![alt text](/assets/milestone2/detect_IR_part1.png)
+![alt text](/assets/milestone2/detect_IR_part2.png)
 
 In Section 1 of the code, we save the values of the registers that the FFT modifies in temporary variables. In Section 3 we set the registers back to their temporary values before the FFT modified them. This is so that when we get back to our program loop, the servos are able to use the original values before we went through the FFT. Otherwise, the FFT works as normal. In section 2 we take an average over the FFTs, so really the 42nd bin for 6kHz is only read every 5 iterations through the program’s loop() function. We found that this works fast enough and is more accurate. When the counter has gotten to 5, we check the average for the 42nd bin to see if it is above our set threshold. If it is we return true, triggering the servos to stop for 5 seconds.  
 
