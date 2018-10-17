@@ -6,7 +6,9 @@ The goal of this milestone was to enable our robot to follow walls and to use ou
 
 **Materials**
 The materials used for this milestone are as follows:
-* 
+* wall detection sensors (3)
+* IR sensor
+* IR hat
 
 **Procedure:**  
 
