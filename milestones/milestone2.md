@@ -50,8 +50,7 @@ We can also see that on line 98 the cli() function is commented out, which was n
 
 This is a picture of our robot after this lab. The FPGA and extra breadboard for a mux will be able to go on top.
 ![alt text](/assets/milestone2/robot_view1.png)
-The IR hat is under the top blue piece.
-![alt text](/assets/milestone2/robot_view2.png)
+
 
 **Video of Figure Eight**  
 <a href="https://www.youtube.com/watch?v=l3SK6mzpvlA
