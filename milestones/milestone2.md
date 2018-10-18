@@ -52,7 +52,7 @@ This is a picture of our robot after this lab. The FPGA and extra breadboard for
 ![alt text](/assets/milestone2/robot_view1.png)
 
 **Results:** 
-Below is a video that demonstrates the results of our milestone. The first clips use the LEDs to show what the robot is "thinking" when walls are detected. The second clips show wall following. The final clip demonstrates the robot's ability to stop when it detects another robot through the IR hat.
+Below is a video that demonstrates the results of our milestone. The first clips use the LEDs to show what the robot is "thinking" when walls are detected. The second clips show wall following. The final clip demonstrates the robot's ability to stop when it detects another robot through the IR hat.  
 **Video of Milestone 2**  
 <a href="https://www.youtube.com/watch?v=Sw3WUQa44-k
 " target="_blank"><img src="http://img.youtube.com/vi/Sw3WUQa44-k/0.jpg" 
