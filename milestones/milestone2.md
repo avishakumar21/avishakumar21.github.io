@@ -51,10 +51,11 @@ We can also see that on line 98 the cli() function is commented out, which was n
 This is a picture of our robot after this lab. The FPGA and extra breadboard for a mux will be able to go on top.
 ![alt text](/assets/milestone2/robot_view1.png)
 
-
-**Video of Figure Eight**  
-<a href="https://www.youtube.com/watch?v=l3SK6mzpvlA
-" target="_blank"><img src="http://img.youtube.com/vi/l3SK6mzpvlA/0.jpg" 
+**Results:** 
+Below is a video that demonstrates the results of our milestone. The first clips use the LEDs to show what the robot is "thinking" when walls are detected. The second clips show wall following. The final clip demonstrates the robot's ability to stop when it detects another robot through the IR hat.
+**Video of Milestone 2**  
+<a href="https://www.youtube.com/watch?v=Sw3WUQa44-k
+" target="_blank"><img src="http://img.youtube.com/vi/Sw3WUQa44-k/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 
