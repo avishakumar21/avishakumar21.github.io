@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>lab 3 | LEAK Leeks</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="lab 3" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="FA18 ECE3400’s premier team 5" />
+<meta property="og:description" content="FA18 ECE3400’s premier team 5" />
+<link rel="canonical" href="http://localhost:4000/labs/lab3.html" />
+<meta property="og:url" content="http://localhost:4000/labs/lab3.html" />
+<meta property="og:site_name" content="LEAK Leeks" />
+<meta property="og:image" content="http://localhost:4000/assets/LeekColor.png" />
+<script type="application/ld+json">
+{"url":"http://localhost:4000/labs/lab3.html","headline":"lab 3","description":"FA18 ECE3400’s premier team 5","publisher":{"@type":"Organization","logo":{"@type":"ImageObject","url":"http://localhost:4000/images/LeekColor.svg"}},"@type":"WebPage","image":"http://localhost:4000/assets/LeekColor.png","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link rel="stylesheet" href="/assets/css/style.css?v=b2c229c75ab57522c301dce3b0b4b31dd5b414c7">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">LEAK Leeks</h1>
+      <h2 class="project-tagline">FA18 ECE3400's premier team 5</h2>
+      
+        <a href="https://github.com/liampatterson/FA18-ECE3400" class="btn">View on GitHub</a>
+      
+      
+    </section>
+
+    <section class="main-content">
+      <h1 id="lab-3">Lab 3</h1>
+
+<p><strong>Goal:</strong><br />
+The goal of this lab was to integrate everything we previously created into the robot, along with adding a radio to communicate to a GUI, so that the robot can explore a maze successfully.</p>
+
+<p><strong>Robot Group:</strong><br />
+Emma &amp; Katarina</p>
+
+<p><em>Implementing a Multiplexer:</em><br />
+For integrating everything together, our first concern was running out of analog pins. We knew that we wanted the FFTs for the IR and microphone to work on analog rather than digital, so we needed to extend how many pins we had. Rather than use a Schmitt trigger, we decided to use a mux. Below is a schematic of the 8:1 mux that we used.
+<img src="/assets/lab3/mux_blank" alt="drawing" height="200px" /></p>
+
+<p>We only have 6 analog pins, but we need to include 3 line sensors, 3 wall detection sensors, one IR sensor, and one microphone. We decided to move the wall detection sensors onto the mux because we only need to check for walls at a vertex. This means we can explicitly set the enable bit to low (it is active low, which caused us some confusion at first!) when the robot reaches a vertex. The robot can enable each channel and check for a wall, and then continue based on the logic from which walls are around it.<br />
+<img src="/assets/lab3/our_mux_circuit" alt="drawing" height="200px" /></p>
+
+<p>Below is the code for our updated readDistanceSensors() function.<br />
+<img src="/assets/lab3/dist_sensor_code" alt="drawing" height="200px" /></p>
+
+<p>Before reading a channel’s output, we must choose the channel. We do this by setting the select bits. The select bits go to three digital pins on the arduino. Below is an example of a chooseChannel() function which sets the select bits to high or low depending on which sensor it should read. This function chooses channel one by setting S0 S1 S2 to 001.<br />
+<img src="/assets/lab3/chn_code" alt="drawing" height="200px" /></p>
+
+<p><strong>Radio Code:</strong>
+Liam</p>
+
+<p><em>Data Scheme</em></p>
+
+<p>In an effort to reduce the amount of bits needed to send over to the base station, we encoded the maze data in bytes through the use of bit masking. In total, we need to encode 9 bits of data per square. The first four bits encode the wall presence and locations (North, East, South, West). The next two encode the type of treasure present (No treasure, triangle, circle, square). The bit after that defaults to treasure red, and a value of 1 indicates blue treasure. The final bit in the first byte indicates another robot present. We use a full byte to indicate our robot’s coordinates ( four bits x, four bits y ) since we need to navigate a 9x9 maze. And finally, we have to use one more bit ( and consequently one more whole byte ) to represent a square we’ve navigated to so that way we know we’ve explored it if we return to it.</p>
+
+<p><em>Establishing Reliable Communication</em></p>
+
+<p>The Arduino’s send each other information through a process, similar to a TCP handshake. The first Arduino sends the information over to the second. The second Arduino receives it and sends the packet back, acting as both an acknowledgement as well as an information check. The first Arduino checks to make sure that the sent packet matches with the acknowledged packet. This allows for reliable communication between the devices. We also send packet identifiers through this process, allowing the packets to be sorted correctly.</p>
+
+<p><em>Parsing GUI Information</em></p>
+
+<p>We also do packet parsing to output the correct GUI information within the receive() function. For any given byte to be parsed, we run it through a helper function ( either firstByteRead() or coordinateRead() ) and then add it to our output string, which runs Serial.println to pass it on to the GUI.</p>
+
+<p>Initially, we ran the GUI code locally to test that the GUI could receive and process data. However, we’d already established our radio code, so parsing the radio data to display was not much more difficult to establish.</p>
+
+<p><em>Implementation</em></p>
+
+<p>Our code for the radio is posted below. It is at the moment encased in one file, and roles can be changed between Arduinos. Upon integration, the program will be separated into base-station and robot specific functions, to optimize memory space.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/*
+  Copyright (C) 2011 J. Coliz &lt;maniacbug@ymail.com&gt;
+
+  This program is free software; you can redistribute it and/or
+  modify it under the terms of the GNU General Public License
+  version 2 as published by the Free Software Foundation.
+*/</span>
+
+<span class="cm">/**
+  Example for Getting Started with nRF24L01+ radios.
+
+  This is an example of how to use the RF24 class.  Write this sketch to two
+  different nodes.  Put one of the nodes into 'transmit' mode by connecting
+  with the serial monitor and sending a 'T'.  The ping node sends the current
+  time to the pong node, which responds by sending the value back.  The ping
+  node can then see how long the whole cycle took.
+*/</span>
+
+<span class="cp">#include &lt;SPI.h&gt;
+#include "nRF24L01.h"
+#include "RF24.h"
+#include "printf.h"
+</span>
+<span class="c1">//
+// Hardware configuration
+//
+</span>
+<span class="cm">/***
+   DEFINING BIT MASKS TO USE
+   4 bits - WALLS ( N, E, S, W )
+   2 bits - TREASURE SHAPE ( NONE, TRIANGLE, CIRCLE, SQUARE )
+   1 bits - TREASURE COLOR ( RED, BLUE )
+   1 bits - ROBOT IS HERE ( YES, NO, FROM IR )
+   1 bits - EXPLORED? ( YES, NO )
+***/</span>
+
+<span class="cp">#define WALL_NORTH_PRESENT B10000000;
+#define WALL_EAST_PRESENT  B01000000;
+#define WALL_SOUTH_PRESENT B00100000;
+#define WALL_WEST_PRESENT  B00010000;
+</span>
+<span class="cp">#define TREASURE_NONE      B00000000;
+#define TREASURE_TRIANGLE  B00000100;
+#define TREASURE_CIRCLE    B00001000;
+#define TREASURE_SQUARE    B00001100;
+</span>
+<span class="cp">#define TREASURE_RED       B00000000;
+#define TREASURE_BLUE      B00000010;
+</span>
+<span class="cp">#define ROBOT_NOT_PRESENT  B11111110;
+#define ROBOT_PRESENT      B00000001;
+</span>
+<span class="cp">#define EXPLORED           B10000000;
+</span>
+<span class="cm">/*** FINISHED DEFINING BIT MASKS **/</span>
+<span class="c1">// Set up nRF24L01 radio on SPI bus plus pins 9 &amp; 10
+</span>
+<span class="n">RF24</span> <span class="n">radio</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
+
+<span class="c1">//
+// Topology
+//
+</span>
+<span class="c1">// Radio pipe addresses for the 2 nodes to communicate.
+</span><span class="k">const</span> <span class="kt">uint64_t</span> <span class="n">pipes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mh">0x000000000ALL</span><span class="p">,</span> <span class="mh">0x000000000BLL</span> <span class="p">};</span>
+
+<span class="c1">//
+// Role management
+//
+// Set up role.  This sketch uses the same software for all the nodes
+// in this system.  Doing so greatly simplifies testing.
+//
+</span>
+<span class="c1">// The various roles supported by this sketch
+</span><span class="k">typedef</span> <span class="k">enum</span> <span class="p">{</span> <span class="n">role_ping_out</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">role_pong_back</span> <span class="p">}</span> <span class="n">role_e</span><span class="p">;</span>
+
+<span class="c1">// The debug-friendly names of those roles
+</span><span class="k">const</span> <span class="kt">char</span><span class="o">*</span> <span class="n">role_friendly_name</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span> <span class="s">"invalid"</span><span class="p">,</span> <span class="s">"Ping out"</span><span class="p">,</span> <span class="s">"Pong back"</span><span class="p">};</span>
+
+<span class="c1">// The role of the current running sketch
+</span><span class="n">role_e</span> <span class="n">role</span> <span class="o">=</span> <span class="n">role_pong_back</span><span class="p">;</span>
+
+
+<span class="kt">bool</span> <span class="n">northWall</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">southWall</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">eastWall</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">westWall</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">treasureCircle</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">treasureTriangle</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">treasureSquare</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">treasureRed</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">treasureBlue</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">robotPresent</span><span class="p">;</span>
+
+
+<span class="n">String</span> <span class="n">parsedCoordinates</span><span class="p">;</span>
+<span class="n">String</span> <span class="n">parsedFirstByte</span><span class="p">;</span>
+<span class="n">String</span> <span class="n">parsedSecondByte</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">printFlag</span><span class="p">;</span>
+
+<span class="n">String</span> <span class="n">serialOutput</span><span class="p">;</span>
+<span class="n">String</span> <span class="n">coordinateString</span><span class="p">;</span>
+<span class="n">String</span> <span class="n">firstString</span><span class="p">;</span>
+<span class="n">String</span> <span class="n">secondString</span><span class="p">;</span>
+
+<span class="c1">//CREATE MAZE
+</span><span class="cm">/**
+
+      __0____1____2__
+   0 | tTR       tSB |
+     |    ___________|
+   1 |       R       |
+     |___________    |
+   2 |      tCR      |
+     |_______________|
+
+
+*/</span>
+
+<span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+  <span class="kt">bool</span> <span class="n">northWall</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">southWall</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">eastWall</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">westWall</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">treasureCircle</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">treasureTriangle</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">treasureSquare</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">treasureRed</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">treasureBlue</span><span class="p">;</span>
+  <span class="kt">bool</span> <span class="n">robotPresent</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">mazeSquare</span><span class="p">;</span>
+
+<span class="n">mazeSquare</span> <span class="n">maze</span><span class="p">[</span><span class="mi">3</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="p">{</span>
+  <span class="c1">//{ { true, false, false, true, false, true, false, true }, { true, true, false, false }, { true, true, true, false, false, false, true, false, true } },
+</span>  <span class="p">{</span> <span class="p">{</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">true</span> <span class="p">},</span> <span class="p">{</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span> <span class="p">},</span> <span class="p">{</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="c1">//{ { false, true, false, true }, { true, true, false, false, false, false, false, false, false, true }, { true, false, true, false } },
+</span>  <span class="p">{</span> <span class="p">{</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">true</span> <span class="p">},</span> <span class="p">{</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span> <span class="p">},</span> <span class="p">{</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span> <span class="p">}</span> <span class="p">},</span>
+  <span class="c1">//{ { true, true, false, true }, { true, true, false, false, true, false, false, true }, {false, true, true, false} }  
+</span>  <span class="p">{</span> <span class="p">{</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">true</span> <span class="p">},</span> <span class="p">{</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">,</span> <span class="nb">false</span> <span class="p">},</span> <span class="p">{</span><span class="nb">false</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">true</span><span class="p">,</span> <span class="nb">false</span><span class="p">}</span> <span class="p">}</span>  
+<span class="p">};</span>
+
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">//
+</span>  <span class="c1">// Print preamble
+</span>  <span class="c1">//
+</span>
+  <span class="n">Serial</span><span class="p">.</span><span class="n">begin</span><span class="p">(</span><span class="mi">9600</span><span class="p">);</span>
+  <span class="n">printf_begin</span><span class="p">();</span>
+  <span class="c1">//printf("\n\rRF24/examples/GettingStarted/\n\r");
+</span>  <span class="c1">//printf("ROLE: %s\n\r", role_friendly_name[role]);
+</span>  <span class="c1">//printf("*** PRESS 'T' to begin transmitting to the other node\n\r");
+</span>
+  <span class="c1">//
+</span>  <span class="c1">// Setup and configure rf radio
+</span>  <span class="c1">//
+</span>
+  <span class="n">radio</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+
+  <span class="c1">// optionally, increase the delay between retries &amp; # of retries
+</span>  <span class="n">radio</span><span class="p">.</span><span class="n">setRetries</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">);</span>
+  <span class="n">radio</span><span class="p">.</span><span class="n">setAutoAck</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+  <span class="c1">// set the channel
+</span>  <span class="n">radio</span><span class="p">.</span><span class="n">setChannel</span><span class="p">(</span><span class="mh">0x50</span><span class="p">);</span>
+  <span class="c1">// set the power
+</span>  <span class="c1">// RF24_PA_MIN=-18dBm, RF24_PA_LOW=-12dBm, RF24_PA_HIGH=-6dBM, and RF24_PA_MAX=0dBm.
+</span>  <span class="n">radio</span><span class="p">.</span><span class="n">setPALevel</span><span class="p">(</span><span class="n">RF24_PA_MAX</span><span class="p">);</span>
+  <span class="c1">//RF24_250KBPS for 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS for 2Mbps
+</span>  <span class="n">radio</span><span class="p">.</span><span class="n">setDataRate</span><span class="p">(</span><span class="n">RF24_2MBPS</span><span class="p">);</span>
+
+  <span class="c1">// optionally, reduce the payload size.  seems to
+</span>  <span class="c1">// improve reliability
+</span>  <span class="n">radio</span><span class="p">.</span><span class="n">setPayloadSize</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+
+  <span class="c1">//
+</span>  <span class="c1">// Open pipes to other nodes for communication
+</span>  <span class="c1">//
+</span>
+  <span class="c1">// This simple sketch opens two pipes for these two nodes to communicate
+</span>  <span class="c1">// back and forth.
+</span>  <span class="c1">// Open 'our' pipe for writing
+</span>  <span class="c1">// Open the 'other' pipe for reading, in position #1 (we can have up to 5 pipes open for reading)
+</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">role_ping_out</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">radio</span><span class="p">.</span><span class="n">openWritingPipe</span><span class="p">(</span><span class="n">pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="n">radio</span><span class="p">.</span><span class="n">openReadingPipe</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+  <span class="p">}</span>
+  <span class="k">else</span>
+  <span class="p">{</span>
+    <span class="n">radio</span><span class="p">.</span><span class="n">openWritingPipe</span><span class="p">(</span><span class="n">pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="n">radio</span><span class="p">.</span><span class="n">openReadingPipe</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+  <span class="p">}</span>
+
+  <span class="c1">//
+</span>  <span class="c1">// Start listening
+</span>  <span class="c1">//
+</span>
+  <span class="n">radio</span><span class="p">.</span><span class="n">startListening</span><span class="p">();</span>
+
+  <span class="c1">//
+</span>  <span class="c1">// Dump the configuration of the rf unit for debugging
+</span>  <span class="c1">//
+</span>
+  <span class="c1">//radio.printDetails();
+</span>  <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span> <span class="s">"reset"</span> <span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="k">while</span> <span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">role_pong_back</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">receive</span><span class="p">();</span>
+    <span class="n">roleChange</span><span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">yVal</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">yVal</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">yVal</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">xVal</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">xVal</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">;</span> <span class="n">xVal</span><span class="o">++</span> <span class="p">)</span> <span class="p">{</span>
+
+      <span class="n">assignGlobalMaze</span><span class="p">(</span> <span class="n">xVal</span><span class="p">,</span> <span class="n">yVal</span> <span class="p">);</span>
+      <span class="n">byte</span> <span class="n">coordinates</span> <span class="o">=</span> <span class="n">xVal</span> <span class="o">&lt;&lt;</span> <span class="mi">4</span> <span class="o">|</span> <span class="n">yVal</span> <span class="p">;</span>
+      <span class="n">byte</span> <span class="n">first</span> <span class="o">=</span> <span class="mh">0x1b</span><span class="p">;</span>
+      <span class="n">byte</span> <span class="n">second</span> <span class="o">=</span> <span class="mh">0x2b</span><span class="p">;</span>
+      <span class="n">byte</span> <span class="n">coords</span> <span class="o">=</span> <span class="mh">0xcc</span><span class="p">;</span>
+      <span class="n">byte</span> <span class="n">firstByte</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+      <span class="n">firstByte</span> <span class="o">=</span> <span class="n">checkWalls</span><span class="p">(</span> <span class="n">firstByte</span> <span class="p">);</span>
+      <span class="n">firstByte</span> <span class="o">=</span> <span class="n">checkTreasure</span><span class="p">(</span> <span class="n">firstByte</span> <span class="p">);</span>
+      <span class="n">firstByte</span> <span class="o">=</span> <span class="n">checkIr</span><span class="p">(</span> <span class="n">firstByte</span> <span class="p">);</span>
+      <span class="n">byte</span> <span class="n">secondByte</span> <span class="o">=</span> <span class="n">EXPLORED</span><span class="p">;</span>
+
+      <span class="n">transmit</span><span class="p">(</span> <span class="n">first</span> <span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span> <span class="mi">250</span> <span class="p">);</span>
+      <span class="n">transmit</span><span class="p">(</span> <span class="n">firstByte</span> <span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span> <span class="mi">250</span> <span class="p">);</span>
+      <span class="n">transmit</span><span class="p">(</span> <span class="n">second</span> <span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span> <span class="mi">250</span> <span class="p">);</span>
+      <span class="n">transmit</span><span class="p">(</span> <span class="n">secondByte</span><span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span> <span class="mi">250</span> <span class="p">);</span>
+      <span class="n">transmit</span><span class="p">(</span> <span class="n">coords</span> <span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span> <span class="mi">250</span> <span class="p">);</span>
+      <span class="n">transmit</span><span class="p">(</span> <span class="n">coordinates</span> <span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span> <span class="mi">2000</span> <span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+  <span class="n">byte</span> <span class="n">ended</span> <span class="o">=</span> <span class="mh">0xFF</span><span class="p">;</span>
+  <span class="n">transmit</span><span class="p">(</span> <span class="n">ended</span> <span class="p">);</span>
+  <span class="n">delay</span><span class="p">(</span> <span class="mi">250</span> <span class="p">);</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span> <span class="nf">assignGlobalMaze</span> <span class="p">(</span> <span class="kt">int</span> <span class="n">xVal</span><span class="p">,</span> <span class="kt">int</span> <span class="n">yVal</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">northWall</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">northWall</span><span class="p">;</span>
+  <span class="n">southWall</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">southWall</span><span class="p">;</span>
+  <span class="n">eastWall</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">eastWall</span><span class="p">;</span>
+  <span class="n">westWall</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">westWall</span><span class="p">;</span>
+  <span class="n">treasureCircle</span>  <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">treasureCircle</span><span class="p">;</span>
+  <span class="n">treasureTriangle</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">treasureTriangle</span><span class="p">;</span>
+  <span class="n">treasureSquare</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">treasureSquare</span><span class="p">;</span>
+  <span class="n">treasureRed</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">treasureRed</span><span class="p">;</span>
+  <span class="n">treasureBlue</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">treasureBlue</span><span class="p">;</span>
+  <span class="n">robotPresent</span> <span class="o">=</span> <span class="n">maze</span><span class="p">[</span> <span class="n">yVal</span> <span class="p">][</span> <span class="n">xVal</span> <span class="p">].</span><span class="n">robotPresent</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="c1">// vim:cin:ai:sts=2 sw=2 ft=cpp
+</span>
+
+<span class="kt">void</span> <span class="nf">roleChange</span><span class="p">(</span> <span class="kt">void</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="c1">//
+</span>  <span class="c1">// Change roles
+</span>  <span class="c1">//
+</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">Serial</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="kt">char</span> <span class="n">c</span> <span class="o">=</span> <span class="n">toupper</span><span class="p">(</span><span class="n">Serial</span><span class="p">.</span><span class="n">read</span><span class="p">());</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'T'</span> <span class="o">&amp;&amp;</span> <span class="n">role</span> <span class="o">==</span> <span class="n">role_pong_back</span> <span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">"*** CHANGING TO TRANSMIT ROLE -- PRESS 'R' TO SWITCH BACK</span><span class="se">\n\r</span><span class="s">"</span><span class="p">);</span>
+
+      <span class="c1">// Become the primary transmitter (ping out)
+</span>      <span class="n">role</span> <span class="o">=</span> <span class="n">role_ping_out</span><span class="p">;</span>
+      <span class="n">radio</span><span class="p">.</span><span class="n">openWritingPipe</span><span class="p">(</span><span class="n">pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+      <span class="n">radio</span><span class="p">.</span><span class="n">openReadingPipe</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">c</span> <span class="o">==</span> <span class="sc">'R'</span> <span class="o">&amp;&amp;</span> <span class="n">role</span> <span class="o">==</span> <span class="n">role_ping_out</span> <span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">"*** CHANGING TO RECEIVE ROLE -- PRESS 'T' TO SWITCH BACK</span><span class="se">\n\r</span><span class="s">"</span><span class="p">);</span>
+
+      <span class="c1">// Become the primary receiver (pong back)
+</span>      <span class="n">role</span> <span class="o">=</span> <span class="n">role_pong_back</span><span class="p">;</span>
+      <span class="n">radio</span><span class="p">.</span><span class="n">openWritingPipe</span><span class="p">(</span><span class="n">pipes</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+      <span class="n">radio</span><span class="p">.</span><span class="n">openReadingPipe</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">pipes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="n">byte</span> <span class="nf">checkWalls</span><span class="p">(</span> <span class="n">byte</span> <span class="n">firstByte</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">northWall</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">WALL_NORTH_PRESENT</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">southWall</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">WALL_SOUTH_PRESENT</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">eastWall</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">WALL_EAST_PRESENT</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">westWall</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">WALL_WEST_PRESENT</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">firstByte</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">byte</span> <span class="nf">checkTreasure</span><span class="p">(</span> <span class="n">byte</span> <span class="n">firstByte</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">treasureTriangle</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">TREASURE_TRIANGLE</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">treasureCircle</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">TREASURE_CIRCLE</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">treasureSquare</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">TREASURE_SQUARE</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">treasureRed</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">TREASURE_RED</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">treasureBlue</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">TREASURE_BLUE</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">firstByte</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">byte</span> <span class="nf">checkIr</span><span class="p">(</span> <span class="n">byte</span> <span class="n">firstByte</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">robotPresent</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">firstByte</span> <span class="o">|=</span> <span class="n">ROBOT_PRESENT</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="o">!</span><span class="n">robotPresent</span> <span class="p">)</span> <span class="n">firstByte</span> <span class="o">&amp;=</span> <span class="n">ROBOT_NOT_PRESENT</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">firstByte</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="kt">void</span> <span class="nf">transmit</span><span class="p">(</span> <span class="n">byte</span> <span class="n">payload</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Ping out role.  Repeatedly send the current time
+</span>  <span class="c1">//
+</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">role_ping_out</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="c1">// First, stop listening so we can talk.
+</span>    <span class="n">radio</span><span class="p">.</span><span class="n">stopListening</span><span class="p">();</span>
+
+    <span class="n">printf</span><span class="p">(</span> <span class="s">"Now sending %x..."</span><span class="p">,</span> <span class="n">payload</span> <span class="p">);</span>
+    <span class="kt">bool</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">radio</span><span class="p">.</span><span class="n">write</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">payload</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span> <span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span> <span class="n">ok</span> <span class="p">)</span>
+      <span class="n">printf</span><span class="p">(</span> <span class="s">"ok..."</span> <span class="p">);</span>
+    <span class="k">else</span>
+      <span class="n">printf</span><span class="p">(</span> <span class="s">"failed.</span><span class="se">\n\r</span><span class="s">"</span> <span class="p">);</span>
+
+    <span class="c1">// Now, continue listening
+</span>    <span class="n">radio</span><span class="p">.</span><span class="n">startListening</span><span class="p">();</span>
+
+    <span class="c1">// Wait here until we get a response, or timeout (250ms)
+</span>    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">started_waiting_at</span> <span class="o">=</span> <span class="n">millis</span><span class="p">();</span>
+    <span class="kt">bool</span> <span class="n">timeout</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span> <span class="o">!</span> <span class="n">radio</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="o">&amp;&amp;</span> <span class="o">!</span> <span class="n">timeout</span> <span class="p">)</span>
+      <span class="k">if</span> <span class="p">(</span><span class="n">millis</span><span class="p">()</span> <span class="o">-</span> <span class="n">started_waiting_at</span> <span class="o">&gt;</span> <span class="mi">1000</span> <span class="p">)</span>
+        <span class="n">timeout</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+    <span class="c1">// Describe the results
+</span>    <span class="k">if</span> <span class="p">(</span> <span class="n">timeout</span> <span class="p">)</span>
+    <span class="p">{</span>
+      <span class="n">printf</span><span class="p">(</span><span class="s">"Failed, response timed out.</span><span class="se">\n\r</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+      <span class="c1">// Grab the response, compare, and send to debugging spew
+</span>      <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">rxPayload</span><span class="p">;</span>
+      <span class="n">radio</span><span class="p">.</span><span class="n">read</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">rxPayload</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span> <span class="p">);</span>
+      <span class="k">if</span> <span class="p">(</span> <span class="n">rxPayload</span> <span class="o">==</span> <span class="n">payload</span> <span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Spew it
+</span>        <span class="n">printf</span><span class="p">(</span><span class="s">"Received correct data %x, RT delay: %lu</span><span class="se">\n\r</span><span class="s">"</span><span class="p">,</span> <span class="n">rxPayload</span><span class="p">,</span> <span class="n">millis</span><span class="p">()</span> <span class="o">-</span> <span class="n">started_waiting_at</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"That's not what I sent, received %x, RT delay: %lu</span><span class="se">\n\r</span><span class="s">"</span><span class="p">,</span> <span class="n">rxPayload</span><span class="p">,</span> <span class="n">millis</span><span class="p">()</span> <span class="o">-</span> <span class="n">started_waiting_at</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Try again 1s later
+</span>    <span class="n">delay</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">receive</span><span class="p">(</span> <span class="kt">void</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="c1">//
+</span>  <span class="c1">// Pong back role.  Receive each packet, dump it out, and send it back
+</span>  <span class="c1">//
+</span>  <span class="k">if</span> <span class="p">(</span> <span class="n">role</span> <span class="o">==</span> <span class="n">role_pong_back</span> <span class="p">)</span>
+  <span class="p">{</span>
+    <span class="c1">// if there is data ready
+</span>    <span class="k">if</span> <span class="p">(</span> <span class="n">radio</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="p">)</span>
+    <span class="p">{</span>
+      <span class="c1">// Dump the payloads until we've gotten everything
+</span>      <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">rxPayload</span><span class="p">;</span>
+      <span class="kt">bool</span> <span class="n">done</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+      <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">done</span><span class="p">)</span>
+      <span class="p">{</span>
+        <span class="c1">// Fetch the payload, and see if this was the last one.
+</span>        <span class="n">done</span> <span class="o">=</span> <span class="n">radio</span><span class="p">.</span><span class="n">read</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">rxPayload</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span> <span class="p">);</span>
+
+        <span class="c1">// Spew it
+</span>        <span class="c1">//printf("Got payload %x...", rxPayload);
+</span>        <span class="k">if</span> <span class="p">(</span> <span class="n">rxPayload</span> <span class="o">==</span> <span class="mh">0xFF</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="n">printf</span><span class="p">(</span> <span class="s">"reset </span><span class="se">\r\n</span><span class="s">"</span> <span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">rxPayload</span> <span class="o">==</span> <span class="mh">0x1b</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="c1">//printf( "\r\nThis is the first byte " );
+</span>          <span class="n">printFlag</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">rxPayload</span> <span class="o">==</span> <span class="mh">0x2b</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="c1">//printf( "This is the second byte " );
+</span>          <span class="n">printFlag</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span> <span class="n">rxPayload</span> <span class="o">==</span> <span class="mh">0xcc</span> <span class="p">)</span> <span class="p">{</span>
+          <span class="c1">//printf( "These are the coordinates " );
+</span>          <span class="n">printFlag</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="p">{</span>
+          <span class="c1">//printf("%x \n\r", rxPayload);
+</span>          <span class="k">switch</span> <span class="p">(</span> <span class="n">printFlag</span> <span class="p">)</span> <span class="p">{</span>
+            <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+              <span class="n">coordinateString</span> <span class="o">=</span> <span class="n">readCoordinates</span><span class="p">(</span> <span class="n">rxPayload</span> <span class="p">);</span>
+              <span class="n">Serial</span><span class="p">.</span><span class="n">println</span><span class="p">(</span> <span class="n">coordinateString</span> <span class="o">+</span> <span class="n">firstString</span> <span class="p">);</span>
+              <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+              <span class="c1">//Serial.println( "2" );
+</span>              <span class="k">break</span><span class="p">;</span>
+            <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+              <span class="n">firstString</span> <span class="o">=</span> <span class="n">readFirstByte</span><span class="p">(</span> <span class="n">rxPayload</span> <span class="p">);</span>
+              <span class="k">break</span><span class="p">;</span>
+            <span class="nl">default:</span>
+              <span class="k">break</span><span class="p">;</span>
+
+
+          <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="c1">// Delay just a little bit to let the other unit
+</span>        <span class="c1">// make the transition to receiver
+</span>        <span class="n">delay</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+
+      <span class="p">}</span>
+
+      <span class="c1">// First, stop listening so we can talk
+</span>      <span class="n">radio</span><span class="p">.</span><span class="n">stopListening</span><span class="p">();</span>
+
+      <span class="c1">// Send the final one back.
+</span>      <span class="n">radio</span><span class="p">.</span><span class="n">write</span><span class="p">(</span> <span class="o">&amp;</span><span class="n">rxPayload</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">char</span><span class="p">)</span> <span class="p">);</span>
+
+
+      <span class="c1">// Now, resume listening so we catch the next packets.
+</span>      <span class="n">radio</span><span class="p">.</span><span class="n">startListening</span><span class="p">();</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">String</span> <span class="nf">readCoordinates</span><span class="p">(</span> <span class="n">byte</span> <span class="n">coordinates</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">output</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+  <span class="n">String</span> <span class="n">xVal</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">coordinates</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span><span class="p">);</span>
+  <span class="n">String</span> <span class="n">yVal</span> <span class="o">=</span> <span class="n">String</span><span class="p">(</span><span class="n">coordinates</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">);</span>
+
+  <span class="n">output</span> <span class="o">=</span> <span class="n">yVal</span> <span class="o">+</span> <span class="s">","</span> <span class="o">+</span> <span class="n">xVal</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="n">String</span> <span class="nf">readFirstByte</span><span class="p">(</span> <span class="n">byte</span> <span class="n">firstByte</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="n">String</span> <span class="n">output</span> <span class="o">=</span> <span class="s">""</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="n">firstByte</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span> <span class="p">)</span> <span class="n">output</span> <span class="o">+=</span> <span class="s">",north=true"</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">firstByte</span> <span class="o">&amp;</span> <span class="n">B01000000</span> <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">6</span> <span class="p">)</span> <span class="n">output</span> <span class="o">+=</span> <span class="s">",east=true"</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">firstByte</span> <span class="o">&amp;</span> <span class="n">B00100000</span> <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span> <span class="p">)</span> <span class="n">output</span> <span class="o">+=</span> <span class="s">",south=true"</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">firstByte</span> <span class="o">&amp;</span> <span class="n">B00010000</span> <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">4</span> <span class="p">)</span> <span class="n">output</span> <span class="o">+=</span> <span class="s">",west=true"</span><span class="p">;</span>
+  <span class="k">switch</span> <span class="p">(</span> <span class="p">(</span> <span class="n">firstByte</span> <span class="o">&amp;</span> <span class="n">B00001100</span> <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">2</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+      <span class="c1">//triangle
+</span>      <span class="n">output</span> <span class="o">+=</span> <span class="s">",tshape=triangle,tcolor=red"</span><span class="p">;</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">2</span><span class="p">:</span>
+      <span class="c1">//circle
+</span>      <span class="n">output</span> <span class="o">+=</span> <span class="s">",tshape=circle,tcolor=red"</span><span class="p">;</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="mi">3</span><span class="p">:</span>
+      <span class="c1">//square
+</span>      <span class="n">output</span> <span class="o">+=</span> <span class="s">",tshape=square,tcolor=red"</span><span class="p">;</span>
+      <span class="k">break</span><span class="p">;</span>
+    <span class="nl">default:</span>
+      <span class="k">break</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">firstByte</span> <span class="o">&amp;</span> <span class="n">B00000010</span> <span class="p">)</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span> <span class="p">)</span> <span class="n">output</span> <span class="o">+=</span> <span class="s">",tcolor=blue"</span><span class="p">;</span>
+  <span class="k">if</span> <span class="p">(</span> <span class="p">(</span> <span class="n">firstByte</span> <span class="o">&amp;</span> <span class="n">B00000001</span> <span class="p">)</span> <span class="p">)</span> <span class="n">output</span> <span class="o">+=</span> <span class="s">",robot=true"</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">output</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<p><strong>Video</strong>
+Coming soon!</p>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/liampatterson/FA18-ECE3400">avishakumar21.github.io</a> is maintained by <a href="http://github.com/avishakumar21">avishakumar21</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </section>
+
+    
+  </body>
+</html>
