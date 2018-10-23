@@ -25,7 +25,7 @@ Below is the code for our updated readDistanceSensors() function.
 Before reading a channel’s output, we must choose the channel. We do this by setting the select bits. The select bits go to three digital pins on the arduino. Below is an example of a chooseChannel() function which sets the select bits to high or low depending on which sensor it should read. This function chooses channel one by setting S0 S1 S2 to 001.  
 <img src="/assets/lab3/chn_code" alt="drawing" height="200px"/> 
 
-We then focused on making sure our robot could run two FFTs in order to both start at a 6.6Hz tone and detect other robots. To accomplish this, we added the audio FFT (from lab 2) the same way we added the IR FFT to our milestone 3 code. We made adjustments to our loop so that our robot would run the audion FFT until the start tone played, and then proceed to run the previously written integrated program with line following, wall following, and IR detection. This code is shown below:
+We then focused on making sure our robot could run two FFTs in order to both start at a 660Hz tone and detect other robots. To accomplish this, we added the audio FFT (from lab 2) the same way we added the IR FFT to our milestone 3 code. We made adjustments to our loop so that our robot would run the audion FFT until the start tone played, and then proceeded to run the previously written integrated program with line following, wall following, and IR detection. This code is shown below:
 <img src="/assets/lab3/integrated_code" alt="drawing" height="200px"/> 
 
 This integration is shown in the video below.
