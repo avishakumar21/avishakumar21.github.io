@@ -21,6 +21,7 @@ We only have 6 analog pins, but we need to include 3 line sensors, 3 wall detect
  
 
 Below is the code for our updated readDistanceSensors() function.  
+  
 ![alt text](/assets/lab3/dist_sensor_code.png)
 
 Before reading a channel’s output, we must choose the channel. We do this by setting the select bits. The select bits go to three digital pins on the arduino. Below is an example of a chooseChannel() function which sets the select bits to high or low depending on which sensor it should read. This function chooses channel one by setting S0 S1 S2 to 001.  
