@@ -14,19 +14,20 @@ Emma & Katarina
 
 *Implementing a Multiplexer:*  
 For integrating everything together, our first concern was running out of analog pins. We knew that we wanted the FFTs for the IR and microphone to work on analog rather than digital, so we needed to extend how many pins we had. Rather than use a Schmitt trigger, we decided to use a mux. Below is a schematic of the 8:1 mux that we used.
-<img src="/assets/lab3/mux_blank" alt="drawing" height="200px"/>  
+![alt text](/assets/lab3/mux_blank.png)
 
 We only have 6 analog pins, but we need to include 3 line sensors, 3 wall detection sensors, one IR sensor, and one microphone. We decided to move the wall detection sensors onto the mux because we only need to check for walls at a vertex. This means we can explicitly set the enable bit to low (it is active low, which caused us some confusion at first!) when the robot reaches a vertex. The robot can enable each channel and check for a wall, and then continue based on the logic from which walls are around it.  
-<img src="/assets/lab3/our_mux_circuit" alt="drawing" height="200px"/>  
+![alt text](/assets/lab3/our_mux_circuit.png)
+ 
 
 Below is the code for our updated readDistanceSensors() function.  
-<img src="/assets/lab3/dist_sensor_code" alt="drawing" height="200px"/>  
+![alt text](/assets/lab3/dist_sensor_code.png)
 
 Before reading a channel’s output, we must choose the channel. We do this by setting the select bits. The select bits go to three digital pins on the arduino. Below is an example of a chooseChannel() function which sets the select bits to high or low depending on which sensor it should read. This function chooses channel one by setting S0 S1 S2 to 001.  
-<img src="/assets/lab3/chn_code" alt="drawing" height="200px"/> 
+![alt text](/assets/lab3/chn_code.png)
 
-We then focused on making sure our robot could run two FFTs in order to both start at a 660Hz tone and detect other robots. To accomplish this, we added the audio FFT (from lab 2) the same way we added the IR FFT to our milestone 3 code. We made adjustments to our loop so that our robot would run the audion FFT until the start tone played, and then proceeded to run the previously written integrated program with line following, wall following, and IR detection. This code is shown below:
-<img src="/assets/lab3/integrated_code" alt="drawing" height="200px"/> 
+We then focused on making sure our robot could run two FFTs in order to both start at a 660Hz tone and detect other robots. To accomplish this, we added the audio FFT (from lab 2) the same way we added the IR FFT to our milestone 3 code. We made adjustments to our loop so that our robot would run the audion FFT until the start tone played, and then proceeded to run the previously written integrated program with line following, wall following, and IR detection. This code is shown below: 
+![alt text](/assets/lab3/integrated_code.png)
 
 This integration is shown in the video below.
 
