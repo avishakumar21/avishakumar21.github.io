@@ -20,12 +20,15 @@ We only have 6 analog pins, but we need to include 3 line sensors, 3 wall detect
 ![alt text](/assets/lab3/our_mux_circuit.png)
  
 
-Below is the code for our updated readDistanceSensors() function.  
+Below is the code for our updated readDistanceSensors() function. We have a case variable which is a 3-bit binary number. If the leftmost bit is set, then there is a wall to the left. If the middle bit is set, then there is a wall in the middle, and so on for the right wall. This is used in our loop so that we can determine where to turn based on which walls are around us. Originally we checked the threshhold in the loop() function, but by moving the threshhold checking to here and saving it in a global case variable, we are able to better detect the walls around us in a faster way.
   
 ![alt text](/assets/lab3/dist_sensor_code.png)
 
 Before reading a channel’s output, we must choose the channel. We do this by setting the select bits. The select bits go to three digital pins on the arduino. Below is an example of a chooseChannel() function which sets the select bits to high or low depending on which sensor it should read. This function chooses channel one by setting S0 S1 S2 to 001.  
 ![alt text](/assets/lab3/chn_code.png)
+
+Below is our code for the switch statement in the loop() which has the logic for which way to turn.  
+![alt text](/assets/lab3/case_statement.png)
 
 We then focused on making sure our robot could run two FFTs in order to both start at a 660Hz tone and detect other robots. To accomplish this, we added the audio FFT (from lab 2) the same way we added the IR FFT to our milestone 3 code. We made adjustments to our loop so that our robot would run the audion FFT until the start tone played, and then proceeded to run the previously written integrated program with line following, wall following, and IR detection. This code is shown below: 
 ![alt text](/assets/lab3/integrated_code.png)
@@ -542,7 +545,7 @@ String readFirstByte( byte firstByte ) {
 ```
 
 
-**Video**
+**Video**   
 <a href="https://www.youtube.com/watch?v=i4yEqFXFNIM
 " target="_blank"><img src="http://img.youtube.com/vi/i4yEqFXFNIM/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
