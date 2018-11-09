@@ -6,7 +6,7 @@ image: /assets/LeekColor.png
 # Lab 4
 
 **Goal:**  
-
+The goal of this lab was to connect our arduino, camera, and fpga in order to detect treasures and distinguish red and blue.
 
 
 **FPGA Group:**  
