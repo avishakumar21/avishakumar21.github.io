@@ -24,7 +24,7 @@ We needed to save this downsampled pixel data into memory. To do this, we needed
 ![alt text](/assets/lab4/downsampler_code.png)
 With this code, we were able to first view the color bar test, and then adjust our registers to view the live camera output on our display screen. An image of our color bar test is shown below, and our live output is shown in our video.
 ![alt text](/assets/lab4/color_bar.png)
-*Image Processing* 
+*Image Processing*  
 We then had to implement image processing. In our image processing module, we begin by checking all pixels in the screen and determining their color. If the pixel we were checking was more red than blue and more red than green, we incremented our REDCOUNT variable. If it was more blue than red and more blue than green, we incremented our BLUECOUNT variable. At the end of frame, as signaled by VSYNC, we checked which count was larger, and output our result to the arduino through GPIO pins as described by the Arduino Team section below. This method consistently determined whether a treasure was red or blue, however, we also needed to find a way to determine whether a treasure was present or not. To accomplish this, we added a threshold to our comparison of REDCOUNT and BLUECOUNT. The larger count additionally had to be above 17,000, meaning the color took up more than half of the number of pixels in the screen, or else the result indicated no treasure. This is implemented with the following code, and the working system is shown in our video below.
 ![alt text](/assets/lab4/imageprocessor_code.png)
 
