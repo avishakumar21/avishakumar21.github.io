@@ -47,6 +47,6 @@ A 00 indicates neither blue nor red has been detected, a 01 indicates red has be
 
 **Video**  
 Note about video: The "camera detecting blue" clip is edited to slow down the printout of the serial monitor because when we took the video we accidentally taped this too quickly. The camera can detect blue though!  
-<a href="https://www.youtube.com/watch?v=j_vugpRga0U
-" target="_blank"><img src="http://img.youtube.com/vi/j_vugpRga0U.jpg" 
+<a href="https://www.youtube.com/watch?v=jF7wjUpW7M4
+" target="_blank"><img src="http://img.youtube.com/vi/jF7wjUpW7M4.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
