@@ -5,7 +5,9 @@
 The goal of this milestone was to implement shape detection for our robot.
 
 **Procedure:**  
+
 *Shape Detection* 
+
 We began with the image processing code from lab 4, which could successfully differentiate red, blue, and no color. To modify this code to also detect shapes, we first had to consider which pixels on the screen would contain the shape. We decided to divide the screen into 9 sections, and to assume that the shape would be approximately contained in the middle section. We then sampled 5 lines from this approximate middle section, and saved the number of red/blue pixels in each line as separate variables. This line-specific color sampling occurs whenever VSYNC is low, indicating that the camera has not yet reached the end of a frame, and it remains separate from the lab 4 code that counts the overall number of red and blue pixels in the frame. The color sampling code for the middle of lines 50, 60, 72, are shown below, and the code repeats for lines 80 and 90.
 
 ![alt text](/assets/milestone4/lineSamplingCode.png)
@@ -15,6 +17,7 @@ When VSYNC is high, indicating the end of a frame, we determine the color and sh
 ![alt text](/assets/milestone4/redShapeDetection.png)
 
 *Robot Integration* 
+
 In the above code, we save the shape and color information to the output variable RESULT, and map its bits to GPIO pins. These GPIO pins are wired to our arduino, which decodes the shape and color information and saves the result. Because the camera sometimes produces a noisy result, we make sure our output stays consistent for 10 loop cycles before saving the shape and color.
 
 ![alt text](/assets/milestone4/blueArduinoCode.png)
