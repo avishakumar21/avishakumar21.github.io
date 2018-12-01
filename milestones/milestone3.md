@@ -25,7 +25,7 @@ We are still trying to improve our algorithm, but overall were able to get it to
 
 **Video of Milestone 3**  
 <a href="https://www.youtube.com/watch?v=VNQdwcPG0ts
-" target="_blank"><img src="http://img.youtube.com/vi/VNQdwcPG0ts-k/0.jpg" 
+" target="_blank"><img src="http://img.youtube.com/vi/VNQdwcPG0ts/0.jpg" 
 alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 
