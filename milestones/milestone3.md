@@ -13,7 +13,7 @@ These are then transmitted to the GUI base station, which then decodes the bit m
 
 **Search Algorithm:** 
 For our search algorithm, we wrote a modified version of Depth First Search (DFS). Below is a high level overview of the algorithm in partial pseudocode:  
-![alt text](/assets/milestone3/highLevelAlgo.png)   
+![alt text](/assets/milestone3/highLevelCode.png)   
 We have a stack that holds only one node at a time in our modified version, because we did not want to implement the entire traditional DFS algorithm with a neighbors list. Before the above while loop, the start node of the robot is pushed to the stack.   
 In the while loop, the node on the stack is popped and this indicates that is the current node the robot is sitting on. The algorithm then checks the surrounding nodes to see if the robot can move to an unvisited node. We check to see if the nodes around it are unvisited by decoding the possible moves the robot could make. We use our 3 bit case variable to figure out which walls are surrounding the robot. The priority is to move straight, then left, then right, which changes depending on where the robot can move.   
 We then decode the possible moves by calculating what the node would be if the robot moved forward, left, or right. We search for this possible node in the set of visited nodes (represented by an array in our actual code), and if it is not visited and there are no walls there then the robot will move there. If the robot could not move to an unvisited node, we check to see if it can move to a visited node. If the robot can move to a node in the priorities listed in the pseudo code, then the possible node is pushed to the stack and we have the robot actually move to that node.
