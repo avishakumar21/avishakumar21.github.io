@@ -8,17 +8,19 @@ image: /assets/LeekColor.png
 This website is a work in progress but will be updated throughout the semester. Stay tuned to see what leaks can do!  
                                    ![it's a leek](/assets/resizeLeek2.png)
 
-## Labs
+## Labs & HW
 - [ Lab 1 ](/labs/lab1)
 - [ Lab 2 ](/labs/lab2)
 - [ Lab 3 ](/labs/lab3)
 - [ Lab 4 ](/labs/lab4)
+- [ Ethics ](/hw/ethics)
 
 ## Milestones
 - [ Milestone 1 ](/milestones/milestone1)
 - [ Milestone 2 ](/milestones/milestone2)
 - [ Milestone 3 ](/milestones/milestone3)
 - [ Milestone 4 ](/milestones/milestone4)
+- [ Final Robot ](/milestones/final)
 
 ## Team Logistics
 - [ Team Contract ](https://docs.google.com/document/d/1Y-GYF5YOMuBmr2MSC1m23GcGJKfIQShC1cP6epcuzao/view)
