@@ -5,8 +5,10 @@ image: /assets/LeekColor.png
 
 # We are LEAK Leeks!
 -----
-This website is a work in progress but will be updated throughout the semester. Stay tuned to see what leaks can do!  
-                                   ![it's a leek](/assets/resizeLeek2.png)
+*About our class*
+We are a team in the class ECE 3400: Intelligent Physical Systems at Cornell University. This class is designed to learn the fundamentals of Electrical and Computer Engineering through building an autonomous robot over the course of a semester. At the end of the semester, we have a final competition where our robots try to go through a maze as quickly as possible, avoid other robots, and collect treasures.
+
+                                                             ![it's a leek](/assets/resizeLeek2.png)
 
 ## Labs & HW
 - [ Lab 1 ](/labs/lab1)
