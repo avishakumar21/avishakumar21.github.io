@@ -24,7 +24,7 @@ In the above code, we save the shape and color information to the output variabl
 
 The above image shows the Arduino averaging code for blue shape detection; the code is identical for red and written directly before the blue code. In this code, we tally our result. When we pass a threshold of ten consistent shape detection outputs in a row, we both print this result and save it as a variable.
 
-A video of our working shape detection is shown below.
+A video of our working shape detection is shown below. The end of the video shows the camera mounted onto the robot. Next we will clean up the wiring on the robot for the camera and put it on a top level for the final competition.
  
 
 **Video of Milestone 4**  
