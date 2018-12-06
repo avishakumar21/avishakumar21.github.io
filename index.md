@@ -7,7 +7,10 @@ image: /assets/LeekColor.png
 ![alt text](/leak_team_photo.jpg)
 
 **About our class**   
-We are a team in the class ECE 3400: Intelligent Physical Systems at Cornell University. This class is designed to learn the fundamentals of Electrical and Computer Engineering through building an autonomous robot over the course of a semester. At the end of the semester, we have a final competition where our robots try to go through a maze as quickly as possible, avoid other robots, and collect treasures.
+We are a team in the class ECE 3400: Intelligent Physical Systems at Cornell University. This class is designed to learn the fundamentals of Electrical and Computer Engineering through building an autonomous robot over the course of a semester. At the end of the semester, we have a final competition where our robots try to go through a maze as quickly as possible, avoid other robots, and collect treasures.  
+
+**About our team**   
+Our team is a fun bunch of juniors in ECE. Katarina, Liam, Avisha, and Emma-- a resource investigator, 
 
  ![it's a leek](/assets/resizeLeek2.png)
 
@@ -27,8 +30,6 @@ We are a team in the class ECE 3400: Intelligent Physical Systems at Cornell Uni
 
 ## Team Logistics
 - [ Team Contract ](https://docs.google.com/document/d/1Y-GYF5YOMuBmr2MSC1m23GcGJKfIQShC1cP6epcuzao/view)
-
-## [ About Us ](/aboutus)
 
 
 ## Resources
