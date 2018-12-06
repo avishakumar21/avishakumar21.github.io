@@ -47,6 +47,7 @@ We had three QTR sensors positioned in the front of our robot. To go straight, w
 1. If the middle line sensor indicated it was on white, while the left and right sensors indicated they were on black, we set both servos to the same speed and went straight.
 2. If the left sensor saw white while the right sensor saw black, we set the right servo to be slightly faster than the left servo, thus correcting left. 
 3. If the right sensor saw black while the left sensor saw right, we set the left servo to be slightly faster than the right servo, thus correcting right.  
+
 In order to turn left or right, we ultimately chose to implement a mix of a timing based and sensor based turn. We began by moving slight forward and turning briefly in whichever direction we chose in order to shift the robot off its original line. The robot would then continue to turn until its middle sensor detected white, indicating it had reached the next line. We were able to get a smooth and reliable turn, which took a lot of trial and error to accomplish.  
 
 *Detecting Walls:*  
