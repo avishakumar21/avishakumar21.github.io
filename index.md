@@ -14,6 +14,8 @@ Our team is a fun bunch of juniors in ECE. Katarina, Liam, Avisha, and Emma-- a 
 
  ![it's a leek](/assets/resizeLeek2.png)
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/UG4vrplBfcs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ## Labs & HW
 - [ Lab 1 ](/labs/lab1)
 - [ Lab 2 ](/labs/lab2)
