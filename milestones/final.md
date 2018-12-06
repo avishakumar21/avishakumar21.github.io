@@ -72,13 +72,6 @@ On the day of the competition, we decided to not bring all these different worki
 After a long semester of learning, developing, and debugging, we started competition day excited to see our hard work pay off. For the first round, our robot kept getting stuck looping through our corner of the maze because of the way that we implemented depth first search, and we only explored and mapped 6 squares of the maze. The second round was much more successful, as we were able to explore 15 squares and successfully avoid another robot. Even though we were not able to advance to the final round, we had a great time showcasing our efforts to the engineering community at Cornell. We’d like to thank Kirsten and the TA’s for organizing this class and competition, and guiding us as we built our brainchild, LEAK! 
 ![alt text](/leak_team_photo.jpg) 
 **Future improvements:**  
-One of the main things that we would focus on if we had more time would be to implement depth first search with backtracking so that we could avoid getting stuck in open mazes with less walls. We would have also liked to improve treasure detection in order to make it perform more consistently given different lighting conditions and wall distances.
+One of the main things that we would focus on if we had more time would be to implement depth first search with backtracking so that we could avoid getting stuck in open mazes with less walls. We would have also liked to improve treasure detection in order to make it perform more consistently given different lighting conditions and wall distances.  
 
-
-
-
-
-
-
-
-
+![it's a leek](/assets/resizeLeek2.png)
