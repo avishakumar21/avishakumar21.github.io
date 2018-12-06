@@ -11,8 +11,6 @@ The final competition was a culmination of not only the concepts and labs of ECE
 * Avoid other robots using IR Hats
   
 While on the day of the final competition we were unable to demonstrate all these capabilities, we can confidently say that we learned how to implement each of these milestones on our robot throughout the semester. We discluded the camera feature in order to improve our chances of winning on competition day. Our final robot was able to perceive its environment using different kinds of sensors, reason through the information it was given by processing data using fast fourier transforms and updating appropriate data structures, and act accordingly determined by the logic and algorithms that we had set up in the code. 
-
-Our intelligent physical system, LEAK, demonstrates almost all of these qualities in the maze traversal below:
   
 **Pictures of our robot:**
 ![alt text](/assets/finaldesign/final_robot.png)  
@@ -25,11 +23,16 @@ Figure 2 shows the robot design at competition. The camera has been removed, and
 
 **Final Schematics**   
 ![alt text](/assets/finaldesign/arduino.png)
-Figure 3: Arduino Schematic
+**Figure 3: Arduino Schematic**
 ![alt text](/assets/finaldesign/mux.png)
-Figure 4: Mux Schematic
+**Figure 4: Mux Schematic**   
 
 **Robot Cost:**  
+The breakdown of our robot cost is as follows:  
+
+![alt text](/assets/finaldesign/cost.png)  
+
+Our final robot was $14 under budget.  
 
 **Design:**
 
