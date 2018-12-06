@@ -15,14 +15,19 @@ While on the day of the final competition we were unable to demonstrate all thes
 Our intelligent physical system, LEAK, demonstrates almost all of these qualities in the maze traversal below:
   
 **Pictures of our robot:**
+![alt text](/assets/finaldesign/final_robot.png)  
+**Figure 1: Final Robot Design**  
+Figure 1 shows our final robot design with everything mounted, including the camera. The IR hat sits under the top level and the camera and FPGA sit on top.  
 
+![alt text](/assets/finaldesign/robot_at_comp.png)    
+**Figure 2: Robot at Competition**  
+Figure 2 shows the robot design at competition. The camera has been removed, and the IR hat placed on the top level.  
 
-
-**Schematics**   
+**Final Schematics**   
 ![alt text](/assets/finaldesign/arduino.png)
-Figure 1: Arduino Schematic
+Figure 3: Arduino Schematic
 ![alt text](/assets/finaldesign/mux.png)
-Figure 2: Mux Schematic
+Figure 4: Mux Schematic
 
 **Robot Cost:**  
 
